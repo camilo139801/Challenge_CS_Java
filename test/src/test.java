@@ -4,8 +4,6 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class test {
-	
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		boolean run = true;
 		int i = 0;
@@ -19,25 +17,38 @@ public class test {
 				if (myReader.hasNextLine())
 					vectorSize = myReader.nextLine().split(",");
 
-                
-
-
-				String[][] matrix = new String[new Integer(vectorSize[0])][new Integer(vectorSize[1])];
+				int Numfilas=Integer.valueOf(vectorSize[0]), NumColumnas= Integer.valueOf(vectorSize[1]);
+            
+				String[][] matrix = new String[Numfilas][NumColumnas];
+				int[][] matrixInt = new int[Numfilas][NumColumnas];
 				
-				while (myReader.hasNextLine() && i < new Integer(vectorSize[0])) {
+
+				while (myReader.hasNextLine() && i < Numfilas) {
 					String data = myReader.nextLine();
 					matrix[i] = data.split(","); 
+					for (int j = 0; j < Numfilas; j++) {
+						matrixInt[i][j] = Integer.valueOf(matrix[i][j]);
+					}
 					i++;
 				}
-				
+
 				System.out.println("Matrix:");
 				
-				System.out.println(Arrays.deepToString(matrix).replace("],","\n").replace(",","\t|").replace("[\\[\\]]|"," ")
+				System.out.println(Arrays.deepToString(matrix).replace("],","\n").replace(",","\t").replace("[\\[\\]]|"," ")
                         .replaceAll("[\\[\\]]", " "));
 
-				System.out.println("********");
-				System.out.println((matrix[1][2]).getClass());
-				System.out.println("********");
+				System.out.println("*********************************************");
+				System.out.println("En esta matriz los datos son de tipo: "+((Object)matrix[1][2]).getClass().getSimpleName());
+				System.out.println("*********************************************");
+
+				System.out.println("MatrixInt:");
+				
+				System.out.println(Arrays.deepToString(matrixInt).replace("],","\n").replace(",","\t").replace("[\\[\\]]|"," ")
+                        .replaceAll("[\\[\\]]", " "));
+
+				System.out.println("*********************************************");
+				System.out.println("En esta matriz los datos son de tipo: "+((Object)matrixInt[1][2]).getClass().getSimpleName());
+				System.out.println("*********************************************");
 				
 				myReader.close();
 
