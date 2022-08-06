@@ -7,12 +7,15 @@ import java.util.LinkedList;
 public class Graph {
 	int vertices;
     LinkedList<Integer> adjList[];
+	LinkedList<Integer> NodeList[];
     
     public Graph(int vertices){
         this.vertices=vertices;
         adjList = new LinkedList[vertices];
+		NodeList = new LinkedList[vertices];
         for(int i=0; i<vertices;i++){
            adjList[i] = new LinkedList<>();
+		   NodeList[i] = new LinkedList<>();
         }
     }
    
@@ -95,29 +98,28 @@ public class Graph {
 				j=0;
 				while (i<Numfilas) {
 					while (j<NumColumnas) {
-						System.out.print(" "+matrixInt[i][j]);
 					    if(matrixInt[i][j]>0){
 							if(j+1<NumColumnas){
 								if(matrixInt[i][j]<matrixInt[i][j+1]){
-								g.addEdge(matrixInt[i][j],matrixInt[i][j+1]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i][j+1]);
 								}
 							}
 			
 							if(j-1>-1){
 								if(matrixInt[i][j]<matrixInt[i][j-1]){
-								g.addEdge(matrixInt[i][j],matrixInt[i][j-1]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i][j-1]);
 								}
 							}
 			
 							if(i+1<NumColumnas){
 								if(matrixInt[i][j]<matrixInt[i+1][j]){
-								g.addEdge(matrixInt[i][j],matrixInt[i+1][j]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i+1][j]);
 								}
 							}  
 			
 							if(i-1>-1){
 								if(matrixInt[i][j]<matrixInt[i-1][j]){
-								g.addEdge(matrixInt[i][j],matrixInt[i-1][j]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i-1][j]);
 								}
 							}
 						}
