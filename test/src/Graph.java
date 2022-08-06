@@ -33,7 +33,7 @@ public class Graph {
     }
 	public static void main(String[] args) {
 		boolean run = true;
-		int i = 0, j=0;
+		int i = 0, j=0,h=1;
         Graph g = new Graph(100000);
 
 		while (run) {
@@ -50,6 +50,7 @@ public class Graph {
             
 				String[][] matrix = new String[Numfilas][NumColumnas];
 				int[][] matrixInt = new int[Numfilas][NumColumnas];
+				int[][] matrixNodos = new int[Numfilas][NumColumnas];
 				
 
 				while (myReader.hasNextLine() && i < Numfilas) {
@@ -57,6 +58,8 @@ public class Graph {
 					matrix[i] = data.split(","); 
 					for (j = 0; j < NumColumnas; j++) {
 						matrixInt[i][j] = Integer.valueOf(matrix[i][j]);
+						matrixNodos[i][j]=h;
+						h++;
 					}
 					i++;
 				}
@@ -81,45 +84,50 @@ public class Graph {
 				System.out.println("*********************************************");
 				System.out.println("En esta matriz los datos son de tipo: "+((Object)matrixInt[1][2]).getClass().getSimpleName());
 				System.out.println("*********************************************");
-			
-			   
 
+				System.out.println("MatrixNodos:");
+				
+				System.out.println(Arrays.deepToString(matrixNodos).replace("],","\n").replace(",","\t").replace("[\\[\\]]|"," ")
+                        .replaceAll("[\\[\\]]", " "));
+			    
+			
                 i=0; 
 				j=0;
 				while (i<Numfilas) {
 					while (j<NumColumnas) {
 						System.out.print(" "+matrixInt[i][j]);
-					
-						if(j+1<3 && matrixInt[i][j]>0){
-							if(matrixInt[i][j]<matrixInt[i][j+1]){
-							g.addEdge(matrixInt[i][j],matrixInt[i][j+1]);
+					    if(matrixInt[i][j]>0){
+							if(j+1<NumColumnas){
+								if(matrixInt[i][j]<matrixInt[i][j+1]){
+								g.addEdge(matrixInt[i][j],matrixInt[i][j+1]);
+								}
+							}
+			
+							if(j-1>-1){
+								if(matrixInt[i][j]<matrixInt[i][j-1]){
+								g.addEdge(matrixInt[i][j],matrixInt[i][j-1]);
+								}
+							}
+			
+							if(i+1<NumColumnas){
+								if(matrixInt[i][j]<matrixInt[i+1][j]){
+								g.addEdge(matrixInt[i][j],matrixInt[i+1][j]);
+								}
+							}  
+			
+							if(i-1>-1){
+								if(matrixInt[i][j]<matrixInt[i-1][j]){
+								g.addEdge(matrixInt[i][j],matrixInt[i-1][j]);
+								}
 							}
 						}
-		
-						if(j-1>-1 && matrixInt[i][j]>0){
-							if(matrixInt[i][j]<matrixInt[i][j-1]){
-							g.addEdge(matrixInt[i][j],matrixInt[i][j-1]);
-							}
-						}
-		
-						if(i+1<3 && matrixInt[i][j]>0){
-							if(matrixInt[i][j]<matrixInt[i+1][j]){
-							g.addEdge(matrixInt[i][j],matrixInt[i+1][j]);
-							}
-						}  
-		
-						if(i-1>-1 && matrixInt[i][j]>0){
-							if(matrixInt[i][j]<matrixInt[i-1][j]){
-							g.addEdge(matrixInt[i][j],matrixInt[i-1][j]);
-							}
-						}
+						
 						j++;
 					}
 						System.out.println();
 						j=0;
 						i++;
 				}
-					System.out.println();
 					g.displayGraph();
 				} catch (FileNotFoundException e) {
 				System.out.println("The file does not exist");
