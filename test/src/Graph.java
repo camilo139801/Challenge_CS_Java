@@ -2,20 +2,20 @@ import java.io.File;
 import java.io.FileNotFoundException;  
 import java.util.Scanner; 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Graph {
-	int vertices;
-    LinkedList<Integer> adjList[];
-	LinkedList<Integer> NodeList[];
-    
+	int vertices,arg[];
+    ArrayList<Integer>[] adjList;
+
+	@SuppressWarnings("unchecked")
+
     public Graph(int vertices){
         this.vertices=vertices;
-        adjList = new LinkedList[vertices];
-		NodeList = new LinkedList[vertices];
+        adjList = new ArrayList[vertices];
         for(int i=0; i<vertices;i++){
-           adjList[i] = new LinkedList<>();
-		   NodeList[i] = new LinkedList<>();
+           adjList[i] = new ArrayList<>();
         }
     }
    
@@ -25,10 +25,11 @@ public class Graph {
     }
 
 	void displayGraph(int matrix[][],int NF, int NC){
-       
-		
-		int arg[] = new int[NF*NC],p=0;
         
+		int arg[] = new int[NF*NC],p=0;
+
+        this.arg=arg;
+
 		for(int i=0; i<NF;i++){
             for(int j=0; j<NC;j++){
 				arg[p]= matrix[i][j];
@@ -47,6 +48,42 @@ public class Graph {
             }
          }
          
+    }
+
+	public void printAllPaths(int s, int d){
+        boolean[] isVisited = new boolean[vertices];
+        ArrayList<Integer> pathList = new ArrayList<>();
+        // add source to path[]
+        pathList.add(s);
+ 
+        // Call recursive utility
+        printAllPathsUtil(s, d, isVisited, pathList);
+    }
+ 
+    private void printAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList){
+        if (u.equals(d)) {
+            System.out.println(localPathList);
+			System.out.println("El numero de caminos es: "+(localPathList.size()-1));
+        }
+
+        isVisited[u] = true;
+ 
+		for (int j=0;j<adjList[u].size();j++) {
+            Integer i = adjList[u].get(j);
+
+            if (isVisited[i]==false) {
+                localPathList.add(i);
+                printAllPathsUtil(i, d, isVisited, localPathList);
+			
+                localPathList.remove(i);
+            }
+			
+        }
+        
+
+        isVisited[u] = false;
+
+		
     }
 
 	public static void main(String[] args) {
@@ -150,8 +187,16 @@ public class Graph {
 						i++;
 				}
 			
-				
 				g.displayGraph(matrixInt,Numfilas,NumColumnas);
+
+				int s = 19;
+ 
+                // arbitrary destination
+                int d = 2;
+ 
+                System.out.println("Following are all different paths from "+ s + " to " + d);
+                g.printAllPaths(s, d);
+				
 
 				} catch (FileNotFoundException e) {
 				System.out.println("The file does not exist");
