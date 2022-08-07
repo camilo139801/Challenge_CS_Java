@@ -9,8 +9,9 @@ public class Graph {
 	int vertices,arg[],y;
     ArrayList<Integer>[] adjList;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")//unnecessary warnings are suppressed
 
+	//Here the graph is created
     public Graph(int vertices){
         this.vertices=vertices;
         adjList = new ArrayList[vertices];
@@ -19,11 +20,15 @@ public class Graph {
         }
     }
    
+	//here the edges of the graph are created
     void addEdge(int Nodemum,int Nodemum2, int Matrixnum, int Matrixnum2){
-	
         adjList[Nodemum].add(Nodemum2);
     }
 
+
+	//Here the nodes(matrixInt) that are interconnected 
+	//by the edges with their corresponding 
+	//indicator(matrixNodos) are printed
 	void displayGraph(int matrix[][],int NF, int NC){
         int y=0;
 		int arg[] = new int[NF*NC],p=0;
@@ -38,7 +43,7 @@ public class Graph {
             }
          }
          
-		 
+		
 		for(int i=0; i<vertices;i++){
             if(adjList[i].size()>0){
                 System.out.println("vertex "+arg[i-1]+"("+i+")"+" is conected to: -");
@@ -47,17 +52,17 @@ public class Graph {
                  }
                 System.out.println();
             }
-         }
+         } 
+		
          
     }
+
+	//In this seccion are printed all the existing paths in the Graph 
 
 	public void printAllPaths(int s, int d){
         boolean[] isVisited = new boolean[vertices];
         ArrayList<Integer> pathList = new ArrayList<>();
-        // add source to path[]
         pathList.add(s);
- 
-        // Call recursive utility
         printAllPathsUtil(s, d, isVisited, pathList);
 
     }
@@ -65,9 +70,13 @@ public class Graph {
     public void printAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList){
         if (u.equals(d)) {
 			System.out.println(localPathList);
-			System.out.println("El numero de caminos es: "+(localPathList.size()-1));
-			y=y+(localPathList.size()-1);
-			System.out.println("La cantidad de caminos total hasta el momento es:"+y);
+			// Here is printed the number of the path
+			System.out.println("El numero de nodos que posee el camino es de: "+(localPathList.size()));
+			if(localPathList.size()>1){
+				y=y+1;
+				// Here is printed the count of the number of the Graph paths  
+				System.out.println("La cantidad de caminos total hasta el momento es:"+y);
+			}
 			return;
         }
 
@@ -94,25 +103,39 @@ public class Graph {
         Graph g = new Graph(100000000);
 
 		while (run) {
+			// Here is done the extraction of the dates from de txt
 			try {
 				File myObj = new File("C:\\Users\\jbenavides\\Desktop\\Challenge_1_Computer_science\\matrizp1.txt");
 				Scanner myReader = new Scanner(myObj);
 
+				// We use this vector for getting the dommensions of the map
 				String[] vectorSize = new String[2];
 
 				if (myReader.hasNextLine())
-					vectorSize = myReader.nextLine().split(",");
+					vectorSize = myReader.nextLine().split(" ");
 
 				int Numfilas=Integer.valueOf(vectorSize[0]), NumColumnas= Integer.valueOf(vectorSize[1]);
 
 				String[][] matrix = new String[Numfilas][NumColumnas];
 				int[][] matrixInt = new int[Numfilas][NumColumnas];
-				int[][] matrixNodos = new int[Numfilas][NumColumnas];
+				int[][] matrixNodos = new int[Numfilas][NumColumnas];// indicator array
 				
+				// We use this vector for getting the dommensions of the map
 
+				/*
+				 These two concatenated cycles are used to 
+				 save the txt data in an array of type string, 
+				 where the separation of the data was done 
+				 through the split function, after this the 
+				 conversion of these data from string to int is 
+				 carried out to have the data stored in an array 
+				 of integer type and finally the indicator array 
+				 is created which is used to be able to differentiate 
+				 the nodes that have equal integer values.
+				 */
 				while (myReader.hasNextLine() && i < Numfilas) {
 					String data = myReader.nextLine();
-					matrix[i] = data.split(","); 
+					matrix[i] = data.split(" "); 
 					for (j = 0; j < NumColumnas; j++) {
 						matrixInt[i][j] = Integer.valueOf(matrix[i][j]);
 						matrixNodos[i][j]=h;
@@ -123,8 +146,8 @@ public class Graph {
 				myReader.close();
                   
 				
-                //Imprimir matriz e idetinficar que tipo de datos esta contenido dento de cada matriz
-
+                //The three matrix are pinted in this section
+                
 				System.out.println("Matrix:");
 				System.out.println(Arrays.deepToString(matrix).replace("],","\n").replace(",","\t").replace("[\\[\\]]|"," ")
                         .replaceAll("[\\[\\]]", " "));
@@ -146,12 +169,22 @@ public class Graph {
 				
 				System.out.println(Arrays.deepToString(matrixNodos).replace("],","\n").replace(",","\t").replace("[\\[\\]]|"," ")
                         .replaceAll("[\\[\\]]", " "));
+			
+				
 			    
 			
                 i=0; 
 				j=0;
                 
-
+                /*
+				 These two concatenated cycles are used 
+				 to create the edges of the graph where 
+				 it is taken into account that a negative 
+				 value cannot be connected, that the limits 
+				 of the matrix are not exceeded and that
+				  finally these edges can only be made 
+				  vertically and horizontal.
+				 */
 
 				while (i<Numfilas) {
 					while (j<NumColumnas) {
@@ -203,11 +236,13 @@ public class Graph {
 				*/
 				
 				System.out.println();
-                
+                /*
+				 these three concatenated loops are used to print all existing paths within the graph
+				 */
 				for(h=1; h<(NumColumnas*Numfilas+1);h++){
 					for(i=0; i<Numfilas;i++){
 						for(j=0; j<NumColumnas;j++){
-							//System.out.println("Following are all different paths from "+ h + " to " + matrixNodos[i][j]);
+							System.out.println("Following are all different paths from "+ h + " to " + matrixNodos[i][j]);
 							g.printAllPaths(h, matrixNodos[i][j]);
 						}
 					}
