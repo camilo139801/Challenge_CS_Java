@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
-	int vertices,arg[];
+	int vertices,arg[],y;
     ArrayList<Integer>[] adjList;
 
 	@SuppressWarnings("unchecked")
@@ -25,10 +25,11 @@ public class Graph {
     }
 
 	void displayGraph(int matrix[][],int NF, int NC){
-        
+        int y=0;
 		int arg[] = new int[NF*NC],p=0;
 
         this.arg=arg;
+		this.y=y;
 
 		for(int i=0; i<NF;i++){
             for(int j=0; j<NC;j++){
@@ -58,12 +59,15 @@ public class Graph {
  
         // Call recursive utility
         printAllPathsUtil(s, d, isVisited, pathList);
+
     }
  
-    private void printAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList){
+    public void printAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList){
         if (u.equals(d)) {
-            System.out.println(localPathList);
-			System.out.println("El numero de caminos es: "+(localPathList.size()-1));
+			System.out.println(localPathList);
+			//System.out.println("El numero de caminos es: "+(localPathList.size()-1));
+			y=y+(localPathList.size()-1);
+			System.out.println(y);
         }
 
         isVisited[u] = true;
@@ -76,20 +80,17 @@ public class Graph {
                 printAllPathsUtil(i, d, isVisited, localPathList);
 			
                 localPathList.remove(i);
-            }
+            };
+		}
 			
-        }
-        
-
         isVisited[u] = false;
 
-		
     }
-
+    
 	public static void main(String[] args) {
 		boolean run = true;
 		int i = 0, j=0, h=1;
-        Graph g = new Graph(100000);
+        Graph g = new Graph(100000000);
 
 		while (run) {
 			try {
@@ -189,14 +190,27 @@ public class Graph {
 			
 				g.displayGraph(matrixInt,Numfilas,NumColumnas);
 
-				int s = 19;
- 
+
+                /* 
+				 int s = 3;
+
                 // arbitrary destination
-                int d = 2;
+                int d = 8;
  
                 System.out.println("Following are all different paths from "+ s + " to " + d);
                 g.printAllPaths(s, d);
+				*/
 				
+				System.out.println();
+                
+				for(h=1; h<(NumColumnas*Numfilas+1);h++){
+					for(i=0; i<Numfilas;i++){
+						for(j=0; j<NumColumnas;j++){
+							//System.out.println("Following are all different paths from "+ h + " to " + matrixNodos[i][j]);
+							g.printAllPaths(h, matrixNodos[i][j]);
+						}
+					}
+				}
 
 				} catch (FileNotFoundException e) {
 				System.out.println("The file does not exist");
