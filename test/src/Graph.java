@@ -19,24 +19,39 @@ public class Graph {
         }
     }
    
-    void addEdge(int source,int destination){
-        adjList[source].add(destination);
+    void addEdge(int Nodemum,int Nodemum2, int Matrixnum, int Matrixnum2){
+	
+        adjList[Nodemum].add(Nodemum2);
     }
 
-    void displayGraph(){
-        for(int i=0; i<vertices;i++){
+	void displayGraph(int matrix[][],int NF, int NC){
+       
+		
+		int arg[] = new int[NF*NC],p=0;
+        
+		for(int i=0; i<NF;i++){
+            for(int j=0; j<NC;j++){
+				arg[p]= matrix[i][j];
+				p++;   
+            }
+         }
+         
+		 
+		for(int i=0; i<vertices;i++){
             if(adjList[i].size()>0){
-                System.out.println("vertex "+i+" is conected to: -");
+                System.out.println("vertex "+arg[i-1]+"("+i+")"+" is conected to: -");
                 for(int j=0; j<adjList[i].size();j++){
-                    System.out.print(adjList[i].get(j)+" ");
+                    System.out.print(arg[adjList[i].get(j)-1]+"("+adjList[i].get(j)+")"+" ");
                  }
                 System.out.println();
             }
          }
+         
     }
+
 	public static void main(String[] args) {
 		boolean run = true;
-		int i = 0, j=0,h=1;
+		int i = 0, j=0, h=1;
         Graph g = new Graph(100000);
 
 		while (run) {
@@ -50,7 +65,7 @@ public class Graph {
 					vectorSize = myReader.nextLine().split(",");
 
 				int Numfilas=Integer.valueOf(vectorSize[0]), NumColumnas= Integer.valueOf(vectorSize[1]);
-            
+
 				String[][] matrix = new String[Numfilas][NumColumnas];
 				int[][] matrixInt = new int[Numfilas][NumColumnas];
 				int[][] matrixNodos = new int[Numfilas][NumColumnas];
@@ -67,7 +82,7 @@ public class Graph {
 					i++;
 				}
 				myReader.close();
-
+                  
 				
                 //Imprimir matriz e idetinficar que tipo de datos esta contenido dento de cada matriz
 
@@ -96,30 +111,34 @@ public class Graph {
 			
                 i=0; 
 				j=0;
+                
+
+
 				while (i<Numfilas) {
 					while (j<NumColumnas) {
 					    if(matrixInt[i][j]>0){
 							if(j+1<NumColumnas){
+								
 								if(matrixInt[i][j]<matrixInt[i][j+1]){
-								g.addEdge(matrixNodos[i][j],matrixNodos[i][j+1]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i][j+1],matrixInt[i][j],matrixInt[i][j+1]);
 								}
 							}
 			
 							if(j-1>-1){
 								if(matrixInt[i][j]<matrixInt[i][j-1]){
-								g.addEdge(matrixNodos[i][j],matrixNodos[i][j-1]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i][j-1],matrixInt[i][j],matrixInt[i][j-1]);
 								}
 							}
 			
 							if(i+1<NumColumnas){
 								if(matrixInt[i][j]<matrixInt[i+1][j]){
-								g.addEdge(matrixNodos[i][j],matrixNodos[i+1][j]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i+1][j],matrixInt[i][j],matrixInt[i+1][j]);
 								}
 							}  
 			
 							if(i-1>-1){
 								if(matrixInt[i][j]<matrixInt[i-1][j]){
-								g.addEdge(matrixNodos[i][j],matrixNodos[i-1][j]);
+								g.addEdge(matrixNodos[i][j],matrixNodos[i-1][j],matrixInt[i][j],matrixInt[i-1][j]);
 								}
 							}
 						}
@@ -130,7 +149,10 @@ public class Graph {
 						j=0;
 						i++;
 				}
-					g.displayGraph();
+			
+				
+				g.displayGraph(matrixInt,Numfilas,NumColumnas);
+
 				} catch (FileNotFoundException e) {
 				System.out.println("The file does not exist");
 			    } catch (Exception e) {
