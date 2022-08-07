@@ -65,9 +65,10 @@ public class Graph {
     public void printAllPathsUtil(Integer u, Integer d, boolean[] isVisited, List<Integer> localPathList){
         if (u.equals(d)) {
 			System.out.println(localPathList);
-			//System.out.println("El numero de caminos es: "+(localPathList.size()-1));
+			System.out.println("El numero de caminos es: "+(localPathList.size()-1));
 			y=y+(localPathList.size()-1);
-			System.out.println(y);
+			System.out.println("La cantidad de caminos total hasta el momento es:"+y);
+			return;
         }
 
         isVisited[u] = true;
